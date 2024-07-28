@@ -11,6 +11,10 @@ const gameSchema = new mongoose.Schema( {
     type     : Date,
     required : true
   },
+  nextGame : {
+    type     : ObjectId,
+    required : false
+  },
   gameCode : {
     type     : String,
     required : true,
