@@ -3,7 +3,7 @@ export interface ICreate {
   date: Date
   nextGame: string
   gameCode: 'quarter-final' | 'semi-final' | 'final'
-  participants: IParticipant[]
+  participants?: IParticipant[]
 }
 
   interface IParticipant{

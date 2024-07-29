@@ -1,12 +1,12 @@
-'use client'
-
+'use client';
 import Button2 from '@/components/Buttons/Button2'
 import DeleteButton from '@/components/Buttons/DeleteButton'
 import EditButton from '@/components/Buttons/EditButton'
 import NoDataFound from '@/components/NoDataFound'
-import ModalAddTeam from '@/components/Pages/Team/Modal/ModalAddTeam'
+import ModalAddGame from '@/components/Pages/Game/Modal/ModalAddGame'
 import ModalEditTeam from '@/components/Pages/Team/Modal/ModalEditTeam'
-import { useDelete, useGetDatas } from '@/lib/hooks/api/team'
+import { useGetDatas } from '@/lib/hooks/api/game'
+import { useDelete } from '@/lib/hooks/api/team'
 import { IData } from '@/types/api/team'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -38,7 +38,7 @@ export default function Admin() {
 
   return (
     <div className="flex flex-col gap-6 overflow-hidden">
-      <h1 className="text-2xl font-semibold ">Team</h1>
+      <h1 className="text-2xl font-semibold ">Game</h1>
       <div className="flex flex-col h-full gap-8">
         <div className="flex justify-end gap-4">
           <Button2
@@ -47,7 +47,7 @@ export default function Admin() {
             onClick={() => setIsOpen( true )}
           >
             <FontAwesomeIcon icon={faPlus} />
-            Add Team
+            Add Game
           </Button2>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function Admin() {
       ) : (
         <NoDataFound />
       )}
-      <ModalAddTeam isOpen={isOpen}
+      <ModalAddGame isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
       <ModalEditTeam id={selectedId}
