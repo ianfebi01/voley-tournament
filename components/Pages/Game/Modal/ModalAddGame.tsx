@@ -102,6 +102,21 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
     } else return []
   }, [teamData?.data] )
 
+  const winnerList = useMemo<Options<IOptions>>( () => {
+    if ( teamData?.data ) {
+      return teamData.data
+        .map( ( item ) => ( {
+          label : item.name,
+          value : item._id,
+        } ) )
+        .filter( ( item ) =>
+          formik.values.participants
+            ?.map( ( partcipant ) => partcipant.value )
+            .includes( item.value )
+        )
+    } else return []
+  }, [teamData?.data, formik.values.participants] )
+
   const getOptions = ( name: string | undefined ) => {
     switch ( name ) {
     case 'nextGame':
@@ -109,7 +124,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
     case 'participants':
       return teamList
     case 'winner':
-      return teamList
+      return winnerList
     default:
       return []
     }

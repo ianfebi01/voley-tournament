@@ -9,8 +9,7 @@ import {
 import { AxiosResponse } from 'axios'
 import useAxiosAuth from '../useAxiosAuth'
 import toast from 'react-hot-toast'
-import { IData } from '@/types/api/team'
-import { ICreatePayload } from '@/types/api/game'
+import { ICreatePayload, IData } from '@/types/api/game'
 
 const baseUrl = '/v1/game'
 

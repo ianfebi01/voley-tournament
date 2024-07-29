@@ -24,7 +24,7 @@ const gameSchema = new mongoose.Schema( {
     {
       team : {
         type     : ObjectId,
-        ref      : "team",
+        ref      : "Team",
         required : true,
       },
       isWinner : {
