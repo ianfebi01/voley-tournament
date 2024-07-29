@@ -9,7 +9,8 @@ import {
 import { AxiosResponse } from 'axios'
 import useAxiosAuth from '../useAxiosAuth'
 import toast from 'react-hot-toast'
-import { ICreatePayload, IData } from '@/types/api/team'
+import { IData } from '@/types/api/team'
+import { ICreatePayload } from '@/types/api/game'
 
 const baseUrl = '/v1/game'
 
@@ -59,7 +60,7 @@ export const useGetData = (
 export const useCreate = (): UseMutationResult<
   void | undefined,
   Error,
-  string,
+  ICreatePayload,
   unknown
 > => {
   const axiosAuth = useAxiosAuth()
@@ -67,9 +68,9 @@ export const useCreate = (): UseMutationResult<
 
   const data = useMutation( {
     mutationKey : ['game-add'],
-    mutationFn  : async ( name: string ) => {
+    mutationFn  : async ( body: ICreatePayload ) => {
       const data: AxiosResponse<IApi> = await axiosAuth.post( baseUrl, {
-        name,
+        ...body,
       } )
 
       return data.data.data

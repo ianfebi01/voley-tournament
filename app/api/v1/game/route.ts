@@ -1,7 +1,7 @@
-import { create, getDatas } from '@/lib/api-lib/controllers/game';
+import { create, getDatas } from '@/lib/api-lib/controllers/game'
 import { createErrorResponse } from '@/lib/api-lib/utils'
-import { ICreate } from '@/types/backend/game';
-import { NextResponse } from 'next/server';
+import { ICreate } from '@/types/backend/game'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
@@ -31,7 +31,10 @@ export async function POST( request: Request ) {
       return createErrorResponse( 'Body is required', 400 )
     }
 
-    const { data, error } = await create( body )
+    const { data, error } = await create( {
+      ...body,
+      nextGame : body.nextGame ? body.nextGame : null,
+    } )
     if ( error ) {
       throw error
     }

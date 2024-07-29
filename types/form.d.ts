@@ -4,7 +4,7 @@ export interface IDynamicForm {
   type: string
   fieldType?: 'text' | 'image' | 'switch' | 'year' | 'date' | 'select' | 'month-year' | 'text-editor'
   placeholder: string
-  options?: Option[]
+  options?: IOptions[]
   validation?: IValidation
   disabled?: boolean
   defaultImageUrl?: string

@@ -1,13 +1,14 @@
 'use client'
-import { FunctionComponent, useEffect, useRef } from 'react'
+import { FunctionComponent, useEffect, useMemo, useRef } from 'react'
 import Modal from '@/components/Modal/Modal'
 import { generateValidationSchema } from '@/lib/generateValidationSchema'
-import { IDynamicForm } from '@/types/form'
+import { IDynamicForm, IOptions } from '@/types/form'
 import { Form, FormikProvider, useFormik } from 'formik'
 import FormikField from '@/components/Inputs/FormikField'
-import { ICreatePayload } from '@/types/api/team'
-import { useCreate } from '@/lib/hooks/api/game'
+import { useCreate, useGetDatas } from '@/lib/hooks/api/game'
 import { createField } from '@/lib/constan/form/form/game'
+import { ICreatePayload } from '@/types/api/game'
+import { Options } from 'react-select'
 
 interface Props {
   isOpen: boolean
@@ -16,18 +17,23 @@ interface Props {
 const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
   // React Query
   const create = useCreate()
+  const { data, isFetching: isLoading } = useGetDatas()
 
   // Form
   const schema = generateValidationSchema( createField )
 
   // Formik
+  const date = new Date()
   const formik = useFormik( {
     initialValues : {
-      name : '',
+      name     : '',
+      date,
+      nextGame : '',
+      gameCode : 'quarter-final',
     },
     validationSchema : schema,
     onSubmit         : ( values: ICreatePayload ) => {
-      create.mutate( values.name )
+      create.mutate( { ...values } )
     },
   } )
 
@@ -45,8 +51,18 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
     if ( create.isSuccess ) {
       setIsOpen( false )
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [create.isSuccess] )
+
+  /**
+   *  Next game option
+   */
+
+  const nextGameList = useMemo<Options<IOptions>>( () => {
+    if ( data?.data ) {
+      return []
+    } else return []
+  }, [data] )
 
   return (
     <Modal
@@ -69,6 +85,8 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
               key={item.name}
               fieldType={item.fieldType}
               required={item.validation?.required}
+              loading={item.name === 'nextGame' ? isLoading : false}
+              options={item.name === 'nextGame' ? nextGameList : item.options}
             />
           ) )}
           <button ref={submitRef}

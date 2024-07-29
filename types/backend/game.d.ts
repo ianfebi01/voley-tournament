@@ -1,7 +1,7 @@
 export interface ICreate {
   name: string
   date: Date
-  nextGame: string
+  nextGame?: string | null
   gameCode: 'quarter-final' | 'semi-final' | 'final'
   participants?: IParticipant[]
 }

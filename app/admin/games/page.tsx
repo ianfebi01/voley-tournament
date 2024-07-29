@@ -12,7 +12,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 
-export default function Admin() {
+export default function Game() {
   const { data, isFetching: isLoading } = useGetDatas()
   const [selectedId, setSelectedId] = useState<string>( '' );
 
