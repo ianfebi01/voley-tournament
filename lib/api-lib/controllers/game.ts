@@ -9,7 +9,7 @@ export async function create( params: ICreate ) {
     const results = await Game.create( { ...params } );
 
     return {
-      results,
+      data : results,
     };
   } catch ( error ) {
     return { error };

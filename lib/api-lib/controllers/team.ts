@@ -1,7 +1,7 @@
 import connectDB from "../connect-db";
 import Team from "../models/Team";
 
-export async function createTeam( name: string ) {
+export async function create( name: string ) {
   try {
     await connectDB();
 
@@ -15,7 +15,7 @@ export async function createTeam( name: string ) {
   }
 }
 
-export async function getTeams( ) {
+export async function getDatas( ) {
   try {
     await connectDB();
 
