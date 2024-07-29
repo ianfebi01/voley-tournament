@@ -1,16 +1,9 @@
 import { create, getDatas } from "@/lib/api-lib/controllers/game";
 import { createErrorResponse } from "@/lib/api-lib/utils";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET( request: NextRequest ) {
+export async function GET( ) {
   try {
-
-    const page_str = request.nextUrl.searchParams.get( "page" );
-    const limit_str = request.nextUrl.searchParams.get( "limit" );
-
-    const page = page_str ? parseInt( page_str, 10 ) : 1;
-    const limit = limit_str ? parseInt( limit_str, 10 ) : 10;
-
     const { data, error, itemCount } = await getDatas();
 
     if ( error ) {
@@ -20,8 +13,6 @@ export async function GET( request: NextRequest ) {
     const json_response = {
       status : "success",
       data,
-      page,
-      limit,
       itemCount,
     };
 		

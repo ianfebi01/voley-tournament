@@ -74,7 +74,7 @@ const api = axios.create( {
 export default api
 
 export const apiAuth = axios.create( {
-  baseURL         : '/api-web',
+  baseURL         : '/api',
   headers         : { "Content-Type" : "application/json" },
   withCredentials : false
 } )

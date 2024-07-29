@@ -150,7 +150,7 @@ const Profile = () => {
   }
 	
   return (
-    <section className='overflow-scroll'>
+    <section className='overflow-hidden'>
       <FormikProvider value={formik}>
 
         <Form onSubmit={onSubmit}
