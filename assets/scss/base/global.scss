@@ -37,3 +37,7 @@ p {
     // background-color: unset !important;
     @apply bg-black;
 }
+
+.react-datepicker-popper{
+    z-index: 1300 !important;
+}

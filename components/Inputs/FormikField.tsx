@@ -217,7 +217,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
   }
 
   return (
-    <div className="flex flex-col gap-2 relative">
+    <div className="relative flex flex-col gap-2">
       <label htmlFor={name}>
         <span>{label}</span>
         {requiredIcon}
@@ -225,7 +225,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
       {fieldType === 'text' ? (
         <>
           {loading ? (
-            <div className="h-8 p-2 w-full border border-white/25 rounded-lg">
+            <div className="w-full h-8 p-2 border rounded-lg border-white/25">
               <div className="h-full max-w-sm bg-dark-secondary animate-pulse"></div>
             </div>
           ) : (
@@ -251,7 +251,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
       ) : fieldType === 'image' ? (
         <>
           {loading ? (
-            <div className="bg-dark-secondary aspect-square w-60  flex items-center justify-center animate-pulse">
+            <div className="flex items-center justify-center bg-dark-secondary aspect-square w-60 animate-pulse">
               Loading...
             </div>
           ) : (
@@ -267,11 +267,11 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
                 accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
               />
               {field.value !== '' ? (
-                <div className=" aspect-square w-60 relative">
+                <div className="relative aspect-square w-60">
                   <div className="absolute z-20 right-4 top-4">
                     <button
                       type="button"
-                      className="text-white w-6 aspect-square border border-none bg-dark-secondary rounded-full"
+                      className="w-6 text-white border border-none rounded-full aspect-square bg-dark-secondary"
                       onClick={() => clearImage()}
                       disabled={disabled}
                     >
@@ -337,6 +337,9 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
             showIcon
             selected={field.value}
             value={field.value}
+            dateFormat="dd/MM/yyyy"
+            popperProps={{ strategy : 'fixed' }}
+            portalId='root'
             className={cn(
               'text-white !py-2 border rounded-lg bg-transparent ring-0 focus:ring-0 shadow-none focus:outline-none  transition-default',
               [
@@ -347,9 +350,10 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
               ]
             )}
             icon={<FontAwesomeIcon icon={faCalendar} />}
-            onChange={( date ) => {
+            onChange={async( date ) => {
               helpers.setValue( new Date( date as Date ) )
-              helpers.setTouched( true )
+              await Promise.resolve()
+              setTimeout( () => helpers.setTouched( true ) )
             }}
           />
         </>
@@ -376,9 +380,10 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
                 ]
               )}
               icon={<FontAwesomeIcon icon={faCalendar} />}
-              onChange={( date ) => {
+              onChange={ async( date ) => {
                 helpers.setValue( new Date( date as Date ) )
-                helpers.setTouched( true )
+                await Promise.resolve()
+                setTimeout( () => helpers.setTouched( true ) )
               }}
             />
           )}
@@ -406,9 +411,10 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
                 ]
               )}
               icon={<FontAwesomeIcon icon={faCalendar} />}
-              onChange={( date ) => {
+              onChange={async( date ) => {
                 helpers.setValue( new Date( date as Date ) )
-                helpers.setTouched( true )
+                await Promise.resolve()
+                setTimeout( () => helpers.setTouched( true ) )
               }}
             />
           )}
