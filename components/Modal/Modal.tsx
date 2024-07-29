@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, FunctionComponent, ReactNode } from 'react'
+import React, { Fragment, FunctionComponent, ReactNode, useState } from 'react'
 import Button2 from '../Buttons/Button2'
 import { cn } from '@/lib/utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -23,7 +23,8 @@ interface Props{
 const Modal: FunctionComponent<Props> = ( props ) => {
 
   const { isOpen, setIsOpen, title, desciption, children, onConfirm, confirmText='Save', cancelText='Cancel', onCancel, loading, border= true, variant='normal' } = props
-	
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>( false );
+
   const handleCancel = () =>{
     if( onCancel !== undefined ){
       onCancel()
@@ -45,10 +46,10 @@ const Modal: FunctionComponent<Props> = ( props ) => {
       unmount={false}
     >
 
-      <Dialog open={isOpen}
+      <Dialog open={isDialogOpen}
         onClose={() => setIsOpen( false )}
         unmount={false}
-        className="fixed z-50 inset-y-0 my-auto inset-x-0 mx-auto w-full bg-dark/75  flex items-center justify-center"
+        className="fixed inset-x-0 inset-y-0 z-50 flex items-center justify-center w-full mx-auto my-auto bg-dark/75"
       >
         <Transition.Child
           as={Fragment}
@@ -59,6 +60,8 @@ const Modal: FunctionComponent<Props> = ( props ) => {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
           unmount={false}
+          afterEnter={()=> setIsDialogOpen( true )}
+          afterLeave={()=> setIsDialogOpen( false )}
         >
 
           <Dialog.Panel className={cn( 
@@ -97,7 +100,7 @@ const Modal: FunctionComponent<Props> = ( props ) => {
 
               {variant === 'warning' ? (
                 <div className='flex gap-4'>
-                  <div className='text-red-500 w-10 h-10 mt-1 flex items-center justify-center border border-red-500 rounded-full'>
+                  <div className='flex items-center justify-center w-10 h-10 mt-1 text-red-500 border border-red-500 rounded-full'>
                     <FontAwesomeIcon icon={faWarning}
                       size='xl'
                     />
@@ -110,7 +113,7 @@ const Modal: FunctionComponent<Props> = ( props ) => {
               ) : children }
 
             </div>
-            <div className='p-4 flex justify-end gap-2'>
+            <div className='flex justify-end gap-2 p-4'>
               <Button2 type='button'
                 onClick={handleCancel}
                 disabled={loading}
