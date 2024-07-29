@@ -37,6 +37,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
         label : 'Quarter Final',
       },
       participants : undefined,
+      winner       : undefined,
     },
     validationSchema : schema,
     onSubmit         : (
@@ -44,6 +45,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
         nextGame?: IOptions
         gameCode?: IOptions
         participants?: IOptions[]
+        winner?: IOptions
       }
     ) => {
       create.mutate( {
@@ -55,7 +57,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
           | 'final',
         participants : values.participants?.map( ( item ) => ( {
           team     : item.value,
-          isWinner : false,
+          isWinner : values.winner?.value === item.value,
         } ) ) as IParticipant[],
       } )
     },
@@ -106,6 +108,8 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
       return nextGameList
     case 'participants':
       return teamList
+    case 'winner':
+      return teamList
     default:
       return []
     }
@@ -142,7 +146,9 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
               select={{
                 isMulti : item.select?.isMulti,
               }}
-              options={getOptions( item.name )}
+              options={
+                item.name === 'gameCode' ? item.options : getOptions( item.name )
+              }
             />
           ) )}
           <button ref={submitRef}

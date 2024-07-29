@@ -1,4 +1,4 @@
-import { IDynamicForm } from "@/types/form";
+import { IDynamicForm } from '@/types/form'
 
 // Dynamic fields
 export const createField: IDynamicForm[] = [
@@ -60,8 +60,8 @@ export const createField: IDynamicForm[] = [
       {
         label : 'Final',
         value : 'final',
-      }
-    ]
+      },
+    ],
   },
   {
     name        : 'participants',
@@ -70,13 +70,26 @@ export const createField: IDynamicForm[] = [
     fieldType   : 'select',
     label       : 'Participants',
     select      : {
-      isMulti : true
+      isMulti : true,
     },
     validation : {
       required   : false,
       charLength : {
         max : 2,
       },
+    },
+  },
+  {
+    name        : 'winner',
+    type        : 'select',
+    placeholder : 'Select winner',
+    fieldType   : 'select',
+    label       : 'Winner',
+    select      : {
+      isMulti : false,
+    },
+    validation : {
+      required : false,
     },
   },
 ]
