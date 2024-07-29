@@ -1,7 +1,7 @@
-import { create, getDatas } from '@/lib/api-lib/controllers/team'
+import { create, getDatas } from '@/lib/api-lib/controllers/team';
 import { createErrorResponse } from '@/lib/api-lib/utils'
 import { ICreatePayload } from '@/types/api/team'
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
