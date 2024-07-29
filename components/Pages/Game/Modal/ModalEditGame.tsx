@@ -122,10 +122,7 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
 
   useEffect( () => {
     if( !formik.values.participants?.length ){
-      formik.setFieldValue( 'winner', {
-        value : '',
-        label : ''
-      } )
+      formik.setFieldValue( 'winner', undefined )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.values.participants] )
