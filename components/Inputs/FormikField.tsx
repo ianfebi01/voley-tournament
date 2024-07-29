@@ -108,7 +108,6 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
     helpers.setValue( val )
     await Promise.resolve()
     setTimeout( () => helpers.setTouched( true ) )
-    helpers.setTouched( true )
   }
   const color = {
     dark              : '#222222',

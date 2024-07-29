@@ -16,12 +16,12 @@ export const generateValidationSchema = ( fields: IDynamicForm[] ) => {
       validations = validations.array().of(
         validations.object( {
           label : yup.string(),
-          value : yup.number()
+          value : yup.string()
         } ) )
 		 else if ( field.fieldType === 'select' && !field.select?.isMulti )
       validations = validations.object( {
         label : yup.string(),
-        value : yup.number()
+        value : yup.string()
       } ) 
     else
       validations = validations.string()

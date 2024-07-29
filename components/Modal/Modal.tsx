@@ -90,7 +90,7 @@ const Modal: FunctionComponent<Props> = ( props ) => {
 						
             }
             <div className={cn(
-              'p-4 overflow-scroll',
+              'p-4 overflow-y-scroll',
               [border && variant !== 'warning' && 'border-b-[1px] border-white/25',
                 !border && 'pb-0',
                 variant === 'warning' && 'pb-0',

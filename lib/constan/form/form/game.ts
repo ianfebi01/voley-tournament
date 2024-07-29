@@ -45,6 +45,9 @@ export const createField: IDynamicForm[] = [
     validation  : {
       required : true,
     },
+    select : {
+      isMulti : false,
+    },
     options : [
       {
         label : 'Quarter Final',
@@ -59,5 +62,21 @@ export const createField: IDynamicForm[] = [
         value : 'final',
       }
     ]
+  },
+  {
+    name        : 'participants',
+    type        : 'select',
+    placeholder : 'Select participants',
+    fieldType   : 'select',
+    label       : 'Participants',
+    select      : {
+      isMulti : true
+    },
+    validation : {
+      required   : false,
+      charLength : {
+        max : 2,
+      },
+    },
   },
 ]
