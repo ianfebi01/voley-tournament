@@ -1,5 +1,20 @@
 import { IDynamicForm } from '@/types/form'
 
+export const gameCodeList = [
+  {
+    label : 'Quarter Final',
+    value : 'quarter-final',
+  },
+  {
+    label : 'Semi Final',
+    value : 'semi-final',
+  },
+  {
+    label : 'Final',
+    value : 'final',
+  },
+]
+
 // Dynamic fields
 export const createField: IDynamicForm[] = [
   {
@@ -48,20 +63,7 @@ export const createField: IDynamicForm[] = [
     select : {
       isMulti : false,
     },
-    options : [
-      {
-        label : 'Quarter Final',
-        value : 'quarter-final',
-      },
-      {
-        label : 'Semi Final',
-        value : 'semi-final',
-      },
-      {
-        label : 'Final',
-        value : 'final',
-      },
-    ],
+    options : gameCodeList,
   },
   {
     name        : 'participants',
@@ -76,6 +78,7 @@ export const createField: IDynamicForm[] = [
       required   : false,
       charLength : {
         max : 2,
+        min : 2,
       },
     },
   },

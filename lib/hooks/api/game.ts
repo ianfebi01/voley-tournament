@@ -127,7 +127,7 @@ export const useDelete = (): UseMutationResult<
 }
 
 /**
- *  Edit team
+ *  Edit game
  */
 export const useEdit = (): UseMutationResult<
   void | undefined,
@@ -140,11 +140,11 @@ export const useEdit = (): UseMutationResult<
 
   const data = useMutation( {
     mutationKey : ['game-edit'],
-    mutationFn  : async ( { id, name }: ICreatePayload & { id: string } ) => {
+    mutationFn  : async ( { id, ...body }: ICreatePayload & { id: string } ) => {
       const data: AxiosResponse<IApi> = await axiosAuth.put(
         baseUrl + '/' + id,
         {
-          name,
+          ...body
         }
       )
 

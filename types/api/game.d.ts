@@ -5,7 +5,7 @@ export interface ICreatePayload extends ICreate {}
 export interface IData {
     _id: string;
     name: string;
-    date: string;
+    date?: string | undefined;
     nextGame: null | string;
     gameCode: string;
     participants: {

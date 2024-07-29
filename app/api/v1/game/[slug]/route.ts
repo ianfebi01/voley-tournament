@@ -1,6 +1,7 @@
-import { deleteData, edit, getData } from "@/lib/api-lib/controllers/team"
+import { edit, getData } from "@/lib/api-lib/controllers/game"
+import { deleteData } from "@/lib/api-lib/controllers/team"
 import { createErrorResponse } from "@/lib/api-lib/utils"
-import { ICreatePayload } from "@/types/api/team"
+import { ICreate } from "@/types/backend/game"
 import { IParams } from "@/types/params"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -44,7 +45,7 @@ export async function GET( _request: NextRequest, { params }: IParams ) {
 
 export async function PUT( request: NextRequest, { params }: IParams ) {
   try {
-    const body: ICreatePayload = await request.json()
+    const body: ICreate = await request.json()
     const { data, error } = await edit( params.slug, body )
   
     if ( error ) {

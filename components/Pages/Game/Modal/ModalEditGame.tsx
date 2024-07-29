@@ -5,32 +5,36 @@ import { generateValidationSchema } from '@/lib/generateValidationSchema'
 import { IDynamicForm, IOptions } from '@/types/form'
 import { Form, FormikProvider, useFormik } from 'formik'
 import FormikField from '@/components/Inputs/FormikField'
-import { useCreate, useGetDatas } from '@/lib/hooks/api/game'
+import { useEdit, useGetData, useGetDatas } from '@/lib/hooks/api/game'
 import { useGetDatas as useGetDatasTeam } from '@/lib/hooks/api/team'
-import { createField } from '@/lib/constan/form/form/game'
+import { createField, gameCodeList } from '@/lib/constan/form/form/game'
 import { ICreatePayload } from '@/types/api/game'
 import { Options } from 'react-select'
 import { IParticipant } from '@/types/backend/game'
 
 interface Props {
   isOpen: boolean
+  id: string
   setIsOpen: ( value: boolean ) => void
 }
-const ModalEditGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
+const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) => {
   // React Query
-  const create = useCreate()
+  const edit = useEdit()
   const { data, isFetching: isLoading } = useGetDatas()
   const { data: teamData, isFetching: isLoadingTeam } = useGetDatasTeam()
+  const { data: detail, isFetching: isLoadingDetail } = useGetData( id, isOpen )
 
-  // Form
+  /**
+   *  Form
+   */
   const schema = generateValidationSchema( createField )
 
-  // Formik
-  const date = new Date()
-
+  /**
+   *  Formik
+   */
   const initialValues = {
     name     : '',
-    date,
+    date     : undefined,
     nextGame : undefined,
     gameCode : {
       value : 'quarter-final',
@@ -39,11 +43,42 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
     participants : undefined,
     winner       : undefined,
   }
-  
+
+  const selectedGameCode = useMemo( () => {
+    if ( detail?.data ) {
+      return gameCodeList.find( ( item ) => item.value === detail?.data?.gameCode )
+    } else {
+      return {
+        value : 'quarter-final',
+        label : 'Quarter Final',
+      }
+    }
+  }, [detail?.data] )
+
   const formik = useFormik( {
-    initialValues,
-    validationSchema : schema,
-    onSubmit         : (
+    initialValues : {
+      name         : detail?.data?.name || '',
+      date         : detail?.data?.date ? new Date( detail?.data?.date ) : undefined,
+      nextGame     : undefined,
+      gameCode     : selectedGameCode,
+      participants : detail?.data?.participants
+        ? detail?.data?.participants.map( ( item ) => ( {
+          label : item.team.name,
+          value : item.team._id,
+        } ) )
+        : undefined,
+      winner : detail?.data?.participants.find( ( item ) => item.isWinner )
+        ? ( {
+          label : detail?.data?.participants.find( ( item ) => item.isWinner )
+            ?.team.name,
+          value : detail?.data?.participants.find( ( item ) => item.isWinner )
+            ?.team._id,
+        } as IOptions )
+        : undefined,
+    },
+    validationSchema   : schema,
+    enableReinitialize : true,
+    onSubmit           : (
       values: Omit<ICreatePayload, 'gameCode' | 'nextGame' | 'participants'> & {
         nextGame?: IOptions
         gameCode?: IOptions
@@ -51,8 +86,9 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
         winner?: IOptions
       }
     ) => {
-      create.mutate( {
+      edit.mutate( {
         ...values,
+        id,
         nextGame : values.nextGame?.value as string,
         gameCode : values.gameCode?.value as
           | 'quarter-final'
@@ -69,18 +105,30 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
   const submitRef = useRef<HTMLButtonElement>( null )
 
   useEffect( () => {
-    formik.handleReset( {
-      ...initialValues
-    } )
+    if ( !isOpen ) {
+      formik.handleReset( {
+        ...initialValues,
+      } )
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen] )
 
   useEffect( () => {
-    if ( create.isSuccess ) {
+    if ( edit.isSuccess ) {
       setIsOpen( false )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [create.isSuccess] )
+  }, [edit.isSuccess] )
+
+  useEffect( () => {
+    if( !formik.values.participants?.length ){
+      formik.setFieldValue( 'winner', {
+        value : '',
+        label : ''
+      } )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.values.participants] )
 
   /**
    *  Option
@@ -139,8 +187,14 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
       onConfirm={() => submitRef.current?.click()}
       onCancel={() => setIsOpen( false )}
       title="Add new game"
-      loading={create.isPending}
+      loading={edit.isPending}
     >
+      <pre>{JSON.stringify( {
+        label : detail?.data?.participants.find( ( item ) => item.isWinner )
+          ?.team.name,
+        value : detail?.data?.participants.find( ( item ) => item.isWinner )
+          ?.team._id,
+      }, null, 1 )}</pre>
       <FormikProvider value={formik}>
         <Form onSubmit={formik.handleSubmit}
           className="flex flex-col gap-2"
@@ -158,7 +212,7 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
                   ? isLoading
                   : item.name === 'participants'
                     ? isLoadingTeam
-                    : false
+                    : isLoadingDetail
               }
               select={{
                 isMulti : item.select?.isMulti,

@@ -36,7 +36,7 @@ export async function getData( id: string ) {
   try {
     await connectDB()
 
-    const results = await Game.findOne( { _id : id } )
+    const results = await Game.findOne( { _id : id } ).populate( { path : 'participants.team', select : 'name', model : Team } )
 
     return {
       data : results,
@@ -50,13 +50,13 @@ export async function edit( id: string, body: ICreate ) {
   try {
     await connectDB()
 
-    const results = await Team.findOneAndUpdate(
+    const results = await Game.findOneAndUpdate(
       { _id : id },
       {
         ...body,
       },
       { new : true }
-    )
+    ).populate( { path : 'participants.team', select : 'name', model : Team } )
 
     return {
       data : results,

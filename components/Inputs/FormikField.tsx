@@ -104,8 +104,10 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
   } )
 
   // React select
-  const handleSelectChange = async ( val: IOptions | IOptions[] ) => {
-    helpers.setValue( val )
+  const handleSelectChange = async ( val: IOptions | IOptions[] | null ) => {
+    if ( val === null ) {
+      helpers.setValue( undefined )
+    } else helpers.setValue( val )
     await Promise.resolve()
     setTimeout( () => helpers.setTouched( true ) )
   }
@@ -338,7 +340,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
             value={field.value}
             dateFormat="dd/MM/yyyy"
             popperProps={{ strategy : 'fixed' }}
-            portalId='root'
+            portalId="root"
             className={cn(
               'text-white !py-2 border rounded-lg bg-transparent ring-0 focus:ring-0 shadow-none focus:outline-none  transition-default',
               [
@@ -349,7 +351,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
               ]
             )}
             icon={<FontAwesomeIcon icon={faCalendar} />}
-            onChange={async( date ) => {
+            onChange={async ( date ) => {
               helpers.setValue( new Date( date as Date ) )
               await Promise.resolve()
               setTimeout( () => helpers.setTouched( true ) )
@@ -379,7 +381,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
                 ]
               )}
               icon={<FontAwesomeIcon icon={faCalendar} />}
-              onChange={ async( date ) => {
+              onChange={async ( date ) => {
                 helpers.setValue( new Date( date as Date ) )
                 await Promise.resolve()
                 setTimeout( () => helpers.setTouched( true ) )
@@ -410,7 +412,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
                 ]
               )}
               icon={<FontAwesomeIcon icon={faCalendar} />}
-              onChange={async( date ) => {
+              onChange={async ( date ) => {
                 helpers.setValue( new Date( date as Date ) )
                 await Promise.resolve()
                 setTimeout( () => helpers.setTouched( true ) )
@@ -428,6 +430,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
             styles={customStyles}
             isLoading={loading}
             value={field.value}
+            isClearable
             components={{
               Input : ( props ) => (
                 <components.Input

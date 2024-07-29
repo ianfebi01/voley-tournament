@@ -4,7 +4,7 @@ import DeleteButton from '@/components/Buttons/DeleteButton'
 import EditButton from '@/components/Buttons/EditButton'
 import NoDataFound from '@/components/NoDataFound'
 import ModalAddGame from '@/components/Pages/Game/Modal/ModalAddGame'
-import ModalEditTeam from '@/components/Pages/Team/Modal/ModalEditTeam'
+import ModalEditGame from '@/components/Pages/Game/Modal/ModalEditGame';
 import { useGetDatas } from '@/lib/hooks/api/game'
 import { useDelete } from '@/lib/hooks/api/team'
 import { IData } from '@/types/api/team'
@@ -89,7 +89,7 @@ export default function Game() {
       <ModalAddGame isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
-      <ModalEditTeam id={selectedId}
+      <ModalEditGame id={selectedId}
         isOpen={isOpenEdit}
         setIsOpen={setIsOpenEdit}
       />
