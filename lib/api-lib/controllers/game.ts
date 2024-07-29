@@ -31,3 +31,37 @@ export async function getDatas( ) {
     return { error };
   }
 }
+
+export async function getData( id: string ) {
+  try {
+    await connectDB()
+
+    const results = await Game.findOne( { _id : id } )
+
+    return {
+      data : results,
+    }
+  } catch ( error ) {
+    return { error }
+  }
+}
+
+export async function edit( id: string, body: ICreate ) {
+  try {
+    await connectDB()
+
+    const results = await Team.findOneAndUpdate(
+      { _id : id },
+      {
+        ...body,
+      },
+      { new : true }
+    )
+
+    return {
+      data : results,
+    }
+  } catch ( error ) {
+    return { error }
+  }
+}
