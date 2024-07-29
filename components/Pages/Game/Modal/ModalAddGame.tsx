@@ -27,18 +27,21 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
 
   // Formik
   const date = new Date()
-  const formik = useFormik( {
-    initialValues : {
-      name     : '',
-      date,
-      nextGame : undefined,
-      gameCode : {
-        value : 'quarter-final',
-        label : 'Quarter Final',
-      },
-      participants : undefined,
-      winner       : undefined,
+
+  const initialValues = {
+    name     : '',
+    date,
+    nextGame : undefined,
+    gameCode : {
+      value : 'quarter-final',
+      label : 'Quarter Final',
     },
+    participants : undefined,
+    winner       : undefined,
+  }
+  
+  const formik = useFormik( {
+    initialValues,
     validationSchema : schema,
     onSubmit         : (
       values: Omit<ICreatePayload, 'gameCode' | 'nextGame' | 'participants'> & {
@@ -67,8 +70,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
 
   useEffect( () => {
     formik.handleReset( {
-      name        : '',
-      description : '',
+      ...initialValues
     } )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen] )
@@ -81,7 +83,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
   }, [create.isSuccess] )
 
   /**
-   *  Next game option
+   *  Option
    */
 
   const nextGameList = useMemo<Options<IOptions>>( () => {
