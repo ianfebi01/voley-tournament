@@ -186,12 +186,6 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
       title="Add new game"
       loading={edit.isPending}
     >
-      <pre>{JSON.stringify( {
-        label : detail?.data?.participants.find( ( item ) => item.isWinner )
-          ?.team.name,
-        value : detail?.data?.participants.find( ( item ) => item.isWinner )
-          ?.team._id,
-      }, null, 1 )}</pre>
       <FormikProvider value={formik}>
         <Form onSubmit={formik.handleSubmit}
           className="flex flex-col gap-2"
