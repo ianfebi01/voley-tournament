@@ -78,7 +78,7 @@ export const createField: IDynamicForm[] = [
       required   : false,
       charLength : {
         max : 2,
-        min : 2,
+        // min : 2,
       },
     },
   },
