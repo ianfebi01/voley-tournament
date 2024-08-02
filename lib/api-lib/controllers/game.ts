@@ -2,6 +2,7 @@ import { ICreate } from "@/types/backend/game";
 import connectDB from "../connect-db";
 import Game from "../models/Game";
 import Team from "../models/Team";
+import { IData } from "@/types/api/game";
 
 export async function create( params: ICreate ) {
   try {
@@ -21,7 +22,7 @@ export async function getDatas( ) {
   try {
     await connectDB();
   
-    const results = await Game.find().populate( { path : 'participants.team', select : 'name', model : Team } )
+    const results: IData[] = await Game.find().populate( { path : 'participants.team', select : 'name', model : Team } )
   
     return {
       data      : results,

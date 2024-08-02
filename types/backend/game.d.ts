@@ -10,3 +10,18 @@ interface IParticipant {
   team: string
   isWinner: boolean
 }
+
+export interface IMatches {
+  id: string
+  nextMatchId: string | number | null
+  name: string
+  startTime: string
+  state: string
+  participants: {
+    id: string
+    resultText: string | null
+    isWinner: boolean
+    status: string | null
+    name: string
+  }[]
+}

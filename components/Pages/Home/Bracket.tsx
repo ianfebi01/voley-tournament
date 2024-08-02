@@ -1,6 +1,6 @@
 'use client'
 import Shape from '@/components/Shape'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useRef, useState } from 'react';
 import {
   SingleEliminationBracket,
   Match,
@@ -9,6 +9,10 @@ import {
 } from '@g-loot/react-tournament-brackets'
 import useHasMounted from '@/lib/hooks/useHasMounted'
 import { useWindowSize } from '@uidotdev/usehooks'
+import { IMatches } from '@/types/backend/game'
+import Button2 from '@/components/Buttons/Button2'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 const DarkTheme = createTheme( {
   textColor       : { main : '#f1f1f1', highlighted : '#f1f1f1', dark : '#f1f1f1bd' },
@@ -27,176 +31,167 @@ const DarkTheme = createTheme( {
   svgBackground           : '#222222',
 } )
 
-const BracketSection: FunctionComponent = () => {
-  const matches = [
-    {
-      id                  : 19753,
-      name                : 'Final - Match',
-      nextMatchId         : null,
-      tournamentRoundText : '3',
-      startTime           : '2021-05-30',
-      state               : 'SCHEDULED',
-      participants        : [],
-    },
-    {
-      id                  : 19754,
-      nextMatchId         : 19753,
-      name                : 'Semi Final - Match',
-      tournamentRoundText : '2',
-      startTime           : '2021-05-30',
-      state               : 'SCHEDULED',
-      participants        : [
-        {
-          id         : '14754a1a-932c-4992-8dec-f7f94a339960',
-          resultText : null,
-          isWinner   : false,
-          status     : null,
-          name       : 'CoKe BoYz',
-          picture    : 'teamlogos/client_team_default_logo',
-        },
-      ],
-    },
-    {
-      id                  : 19755,
-      nextMatchId         : 19754,
-      name                : 'Round 1 - Match',
-      tournamentRoundText : '1',
-      startTime           : '2021-05-30',
-      state               : 'SCORE_DONE',
-      participants        : [
-        {
-          id         : '14754a1a-932c-4992-8dec-f7f94a339960',
-          resultText : 'Won',
-          isWinner   : true,
-          status     : 'PLAYED',
-          name       : 'CoKe BoYz',
-          picture    : 'teamlogos/client_team_default_logo',
-        },
-        {
-          id         : 'd16315d4-7f2d-427b-ae75-63a1ae82c0a8',
-          resultText : 'Lost',
-          isWinner   : false,
-          status     : 'PLAYED',
-          name       : 'Aids Team',
-          picture    : 'teamlogos/client_team_default_logo',
-        },
-      ],
-    },
-    {
-      id                  : 19756,
-      nextMatchId         : 19754,
-      name                : 'Round 1 - Match',
-      tournamentRoundText : '1',
-      startTime           : '2021-05-30',
-      state               : 'RUNNING',
-      participants        : [
-        {
-          id         : 'd8b9f00a-0ffa-4527-8316-da701894768e',
-          resultText : null,
-          isWinner   : false,
-          status     : null,
-          name       : 'Art of kill',
-          picture    : 'teamlogos/client_team_default_logo',
-        },
-      ],
-    },
-    {
-      id                  : 19757,
-      nextMatchId         : 19753,
-      name                : 'Semi Final - Match',
-      tournamentRoundText : '2',
-      startTime           : '2021-05-30',
-      state               : 'SCHEDULED',
-      participants        : [],
-    },
-    {
-      id                  : 19758,
-      nextMatchId         : 19757,
-      name                : 'Round 1 - Match',
-      tournamentRoundText : '1',
-      startTime           : '2021-05-30',
-      state               : 'SCHEDULED',
-      participants        : [
-        {
-          id         : '9397971f-4b2f-44eb-a094-722eb286c59b',
-          resultText : null,
-          isWinner   : false,
-          status     : null,
-          name       : 'Crazy Pepes',
-          picture    : 'teamlogos/client_team_default_logo',
-        },
-      ],
-    },
-    {
-      id                  : 19759,
-      nextMatchId         : 19757,
-      name                : 'Round 1 - Match',
-      tournamentRoundText : '1',
-      startTime           : '2021-05-30',
-      state               : 'SCHEDULED',
-      participants        : [
-        {
-          id         : '42fecd89-dc83-4821-80d3-718acb50a30c',
-          resultText : null,
-          isWinner   : false,
-          status     : null,
-          name       : 'BLUEJAYS',
-          picture    : 'teamlogos/client_team_default_logo',
-        },
-        {
-          id         : 'df01fe2c-18db-4190-9f9e-aa63364128fe',
-          resultText : null,
-          isWinner   : false,
-          status     : null,
-          name       : 'Bosphorus',
-          picture    : 'teamlogos/r7zn4gr8eajivapvjyzd',
-        },
-      ],
-    },
-  ]
-
+const BracketSection: FunctionComponent<{ matches: IMatches[] }> = ( props ) => {
   const hasMounted = useHasMounted()
 
   const { width, height } = useWindowSize()
-  const finalWidth = Math.max( ( width || 0 ) - 50, 500 )
-  const finalHeight = Math.max( ( height || 0 ) - 100, 500 )
+  // const finalWidth = Math.max( ( width || 0 ) - 50, 500 )
+  // const finalHeight = Math.max( ( height || 0 ) - 100, 500 )
+  const finalWidth = ( width || 0 ) - 16
+  const finalHeight = ( height || 0 ) - 80
+
+  const ref = useRef<HTMLDivElement>( null )
+  const parentRef = useRef<HTMLDivElement>( null )
+
+  const [scaleValue, setScaleValue] = useState<number>( 1 )
+
+  const zoomIn = () => {
+    const steps = 0.25
+    setScaleValue( ( prev ) => {
+      const tmp = prev * ( 1 + steps )
+      if ( ref.current ) {
+        ref.current.style.transform = `scale(${tmp})`
+      }
+
+      return tmp
+    } )
+  }
+  const zoomOut = () => {
+    const steps = 0.25
+    setScaleValue( ( prev ) => {
+      const tmp = prev / ( 1 + steps )
+      if ( ref.current ) {
+        ref.current.style.transform = `scale(${tmp})`
+      }
+
+      return tmp
+    } )
+  }
+
+  const mouseDown = () => {
+    const childElement = ref.current
+    const parentElement = parentRef.current
+    if ( !childElement || !parentElement ) return
+    parentElement.style.cursor = 'grabbing'
+    parentElement.onmousemove = ( mouseMoveEvent ) => {
+      // console.log( element.offsetLeft + mouseMoveEvent.movementX )
+      childElement.style.left = `${
+        childElement.offsetLeft + mouseMoveEvent.movementX
+      }px`
+      childElement.style.top = `${
+        childElement.offsetTop + mouseMoveEvent.movementY
+      }px`
+    }
+  }
+
+  // const [previousTouch, setPreviousTouch] = useState<any>( null )
+  // const touchDown = () => {
+  //   const element = ref.current
+  //   if ( !element ) return
+  //   element.style.cursor = 'grabbing'
+
+  //   element.ontouchmove = ( mouseMoveEvent ) => {
+  //     const touch = mouseMoveEvent.touches[0]
+  //     if ( previousTouch ) {
+  //       const movementX =
+  //         Number( touch.pageX.toFixed() ) - Number( previousTouch.pageX.toFixed() )
+  //       const movementY =
+  //         Number( touch.pageY.toFixed() ) - Number( previousTouch.pageY.toFixed() )
+
+  //       element.style.left = `${element.offsetLeft + movementX}px`
+  //       element.style.top = `${element.offsetTop + movementY}px`
+  //       console.log(
+  //         Number( touch.pageX.toFixed() ) - Number( previousTouch.pageX.toFixed() )
+  //       )
+  //     }
+
+  //     setPreviousTouch( mouseMoveEvent.touches[0] )
+  //     // console.log( element.offsetLeft + Number( touch.pageX.toFixed() ) )
+  //     // element.style.left = `${element.offsetLeft + Number( touch.pageX.toFixed() )}px`
+  //     // element.style.top = `${element.offsetTop + Number( touch.pageY.toFixed() )}px`
+  //   }
+  // }
+
+  const mouseUp = () => {
+    const parentElement = parentRef.current
+    if ( !parentElement ) return
+    parentElement.style.cursor = 'grab'
+    parentElement.onmousemove = null
+  }
+
+  // useEffect( ()=>{
+
+  //   const pointerDown=( e )=>{
+  //     console.log( e )
+
+  //   }
+  //   ref.current?.addEventListener( 'pointerdown', ( e )=>pointerDown( e ) )
+
+  //   return ()=> ref.current?.removeEventListener( 'pointerdown', ( e )=> pointerDown( e ) )
+  // }, [] )
 
   return (
     <section
       id="home"
-      className="main__section !px-0 sm:px-0 md:px-0 transition-default bg-dark relative"
+      className="main__section !px-0 sm:px-0 md:px-0 bg-dark relative"
     >
       <Shape />
-      <div className="relative mt-20">
-        {hasMounted && (
-          <SingleEliminationBracket
-            matches={matches}
-            matchComponent={Match}
-            theme={DarkTheme}
-            options={{
-              style : {
-                roundHeader : {
-                  backgroundColor : DarkTheme.roundHeader.backgroundColor,
-                  fontColor       : DarkTheme.roundHeader.fontColor,
+      <div
+        ref={parentRef}
+        className="relative w-full mx-24 mt-20 overflow-hidden border border-white-overlay cursor-grab"
+        onMouseDown={mouseDown}
+        onMouseUp={mouseUp}
+      >
+        <div
+          ref={ref}
+          className="transition-transform duration-200 ease-in-out md:absolute "
+        >
+          {hasMounted && (
+            <SingleEliminationBracket
+              matches={props.matches}
+              matchComponent={Match}
+              theme={DarkTheme}
+              options={{
+                style : {
+                  roundHeader : {
+                    backgroundColor : DarkTheme.roundHeader.backgroundColor,
+                    fontColor       : DarkTheme.roundHeader.fontColor,
+                  },
+                  connectorColor          : DarkTheme.connectorColor,
+                  connectorColorHighlight : DarkTheme.connectorColorHighlight,
                 },
-                connectorColor          : DarkTheme.connectorColor,
-                connectorColorHighlight : DarkTheme.connectorColorHighlight,
-              },
-            }}
-            svgWrapper={( { children, ...props }: any ) => (
-              <SVGViewer
-                background={DarkTheme.svgBackground}
-                SVGBackground={DarkTheme.svgBackground}
-                width={finalWidth}
-                height={finalHeight}
-                {...props}
-              >
-                {children}
-              </SVGViewer>
-            )}
-          />
-        )}
+              }}
+              svgWrapper={
+          
+                ( { children, ...props }: any ) =>      ( width || 0 ) < 768 ? (
+                  <SVGViewer
+                    background={DarkTheme.svgBackground}
+                    SVGBackground={DarkTheme.svgBackground}
+                    width={finalWidth}
+                    height={finalHeight}
+                    {...props}
+                  >
+                    {children}
+                  </SVGViewer>
+                ) : children
+              }
+            />
+          )}
+        </div>
+        <div className="absolute items-center hidden gap-2 md:flex bottom-4 right-4">
+          <Button2 variant="primary"
+            onClick={() => zoomIn()}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </Button2>
+          <Button2 variant="primary"
+            onClick={() => zoomOut()}
+          >
+            <FontAwesomeIcon icon={faMinus} />
+          </Button2>
+        </div>
       </div>
+      <div className="flex gap-4"></div>
     </section>
   )
 }
