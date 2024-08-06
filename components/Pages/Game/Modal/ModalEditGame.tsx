@@ -57,9 +57,14 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
 
   const formik = useFormik( {
     initialValues : {
-      name         : detail?.data?.name || '',
-      date         : detail?.data?.date ? new Date( detail?.data?.date ) : undefined,
-      nextGame     : undefined,
+      name     : detail?.data?.name || '',
+      date     : detail?.data?.date ? new Date( detail?.data?.date ) : undefined,
+      nextGame : detail?.data?.nextGame
+        ? {
+          label : detail?.data?.nextGame.name,
+          value : detail?.data?.nextGame._id,
+        }
+        : undefined,
       gameCode     : selectedGameCode,
       participants : detail?.data?.participants
         ? detail?.data?.participants.map( ( item ) => ( {
@@ -183,7 +188,7 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
       setIsOpen={setIsOpen}
       onConfirm={() => submitRef.current?.click()}
       onCancel={() => setIsOpen( false )}
-      title="Add new game"
+      title="Edit game"
       loading={edit.isPending}
     >
       <FormikProvider value={formik}>

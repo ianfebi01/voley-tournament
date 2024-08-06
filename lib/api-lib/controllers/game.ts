@@ -37,7 +37,11 @@ export async function getData( id: string ) {
   try {
     await connectDB()
 
-    const results = await Game.findOne( { _id : id } ).populate( { path : 'participants.team', select : 'name', model : Team } )
+    const results = await Game.findOne( { _id : id } ).populate( { path : 'participants.team', select : 'name', model : Team } ).populate( {
+      path   : 'nextGame',
+      select : 'name',
+      model  : Game
+    } )
 
     return {
       data : results,
