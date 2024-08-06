@@ -1,6 +1,6 @@
 'use client'
 import Shape from '@/components/Shape'
-import { FunctionComponent, useRef, useState } from 'react';
+import { FunctionComponent, useRef, useState } from 'react'
 import {
   SingleEliminationBracket,
   Match,
@@ -133,62 +133,80 @@ const BracketSection: FunctionComponent<{ matches: IMatches[] }> = ( props ) => 
   return (
     <section
       id="home"
-      className="main__section !px-0 sm:px-0 md:px-0 bg-dark relative"
+      className="main__section !px-0 sm:px-0 md:px-0 bg-dark relativ overflow-hidden"
     >
       <Shape />
-      <div
-        ref={parentRef}
-        className="relative w-full mx-24 mt-20 overflow-hidden border border-white-overlay cursor-grab"
-        onMouseDown={mouseDown}
-        onMouseUp={mouseUp}
-      >
+      <div className='w-screen overflow-hidden px-4'>
+   
         <div
-          ref={ref}
-          className="transition-transform duration-200 ease-in-out md:absolute "
+          ref={parentRef}
+          className="relative md:w-full mt-20 overflow-hidden border border-white-overlay cursor-grab h-[80vh]"
+          onMouseDown={mouseDown}
+          onMouseUp={mouseUp}
         >
-          {hasMounted && (
-            <SingleEliminationBracket
-              matches={props.matches}
-              matchComponent={Match}
-              theme={DarkTheme}
-              options={{
-                style : {
-                  roundHeader : {
-                    backgroundColor : DarkTheme.roundHeader.backgroundColor,
-                    fontColor       : DarkTheme.roundHeader.fontColor,
+          <div
+            ref={ref}
+            className="transition-transform duration-200 ease-in-out md:absolute "
+          >
+            {hasMounted && ( width || 0 ) < 768 ? (
+              <SingleEliminationBracket
+                matches={props.matches}
+                matchComponent={Match}
+                theme={DarkTheme}
+                options={{
+                  style : {
+                    roundHeader : {
+                      backgroundColor : DarkTheme.roundHeader.backgroundColor,
+                      fontColor       : DarkTheme.roundHeader.fontColor,
+                    },
+                    connectorColor          : DarkTheme.connectorColor,
+                    connectorColorHighlight : DarkTheme.connectorColorHighlight,
                   },
-                  connectorColor          : DarkTheme.connectorColor,
-                  connectorColorHighlight : DarkTheme.connectorColorHighlight,
-                },
-              }}
-              svgWrapper={
-          
-                ( { children, ...props }: any ) =>      ( width || 0 ) < 768 ? (
+                }}
+                svgWrapper={( { children, ...props }: any ) => (
                   <SVGViewer
                     background={DarkTheme.svgBackground}
                     SVGBackground={DarkTheme.svgBackground}
-                    width={finalWidth}
-                    height={finalHeight}
+                    width={parentRef.current?.offsetWidth}
+                    height={parentRef.current?.offsetHeight}
                     {...props}
                   >
                     {children}
                   </SVGViewer>
-                ) : children
-              }
-            />
-          )}
-        </div>
-        <div className="absolute items-center hidden gap-2 md:flex bottom-4 right-4">
-          <Button2 variant="primary"
-            onClick={() => zoomIn()}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </Button2>
-          <Button2 variant="primary"
-            onClick={() => zoomOut()}
-          >
-            <FontAwesomeIcon icon={faMinus} />
-          </Button2>
+                )}
+              />
+            ) : hasMounted ? (
+              <SingleEliminationBracket
+                matches={props.matches}
+                matchComponent={Match}
+                theme={DarkTheme}
+                options={{
+                  style : {
+                    roundHeader : {
+                      backgroundColor : DarkTheme.roundHeader.backgroundColor,
+                      fontColor       : DarkTheme.roundHeader.fontColor,
+                    },
+                    connectorColor          : DarkTheme.connectorColor,
+                    connectorColorHighlight : DarkTheme.connectorColorHighlight,
+                  },
+                }}
+              />
+            ) : (
+              ''
+            )}
+          </div>
+          <div className="absolute items-center hidden gap-2 md:flex bottom-4 right-4">
+            <Button2 variant="primary"
+              onClick={() => zoomIn()}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </Button2>
+            <Button2 variant="primary"
+              onClick={() => zoomOut()}
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </Button2>
+          </div>
         </div>
       </div>
       <div className="flex gap-4"></div>
