@@ -11,12 +11,7 @@ export default async function Home() {
 
   try {
     const response = await axios.get<IApi<IMatches[]>>(
-      `${process.env.BASE_URL}/api/v1/game/matches`,
-      {
-        params : {
-          email : 'ianfebi01@gmail.com',
-        },
-      }
+      `${process.env.BASE_URL}/api/v1/game/matches`
     )
     data = response.data
   } catch ( error ) {

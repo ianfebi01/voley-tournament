@@ -15,7 +15,7 @@ const inter = Inter( { subsets : ['latin'] } )
 config.autoAddCss = false
 
 export const metadata: Metadata = {
-  title       : 'Admin Panel | Ian Febi S',
+  title       : 'Admin Panel | Semuluhkidul',
   description : 'Customize data on landing page',
 }
 

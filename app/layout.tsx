@@ -12,9 +12,9 @@ import GoogleAnalytics from '@/components/GoogleAnalytics'
 config.autoAddCss = false
 
 export const metadata: Metadata = {
-  title : 'Ian Febi S',
+  title : 'Karang Taruna Semuluhkidul',
   description :
-    'Front End Web Developer with 1+ year of experience. Expert on React js and Vue js',
+    'Voley competition',
 }
 
 export default function RootLayout( {
