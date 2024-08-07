@@ -429,7 +429,7 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
             isMulti={select?.isMulti}
             styles={customStyles}
             isLoading={loading}
-            value={field.value}
+            value={field.value || ''}
             isClearable
             components={{
               Input : ( props ) => (

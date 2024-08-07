@@ -36,19 +36,19 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
       value : 'quarter-final',
       label : 'Quarter Final',
     },
-    type : {
-      value : 'man',
-      label : 'Man',
-    },
+    type         : undefined,
     participants : undefined,
     winner       : undefined,
   }
-  
+
   const formik = useFormik( {
     initialValues,
     validationSchema : schema,
     onSubmit         : (
-      values: Omit<ICreatePayload, 'gameCode' | 'nextGame' | 'participants' | 'type'> & {
+      values: Omit<
+        ICreatePayload,
+        'gameCode' | 'nextGame' | 'participants' | 'type'
+      > & {
         nextGame?: IOptions
         gameCode?: IOptions
         type?: IOptions
@@ -63,9 +63,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
           | 'quarter-final'
           | 'semi-final'
           | 'final',
-        type : values.type?.value as
-          | 'man'
-          | 'women',
+        type         : values.type?.value as 'man' | 'women',
         participants : values.participants?.map( ( item ) => ( {
           team     : item.value,
           isWinner : values.winner?.value === item.value,
@@ -78,7 +76,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
 
   useEffect( () => {
     formik.handleReset( {
-      ...initialValues
+      ...initialValues,
     } )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen] )
@@ -172,7 +170,9 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
                 isMulti : item.select?.isMulti,
               }}
               options={
-                item.name === 'gameCode' ? item.options : getOptions( item.name )
+                ['gameCode', 'type'].includes( item.name )
+                  ? item.options
+                  : getOptions( item.name )
               }
             />
           ) )}

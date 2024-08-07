@@ -158,11 +158,12 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
 
   const nextGameList = useMemo<Options<IOptions>>( () => {
     if ( data?.data ) {
-      return data.data.map( ( item ) => ( {
+      return data.data.filter( ( item )=> item.type === detail?.data?.type ).map( ( item ) => ( {
         label : item.name,
         value : item._id,
       } ) )
     } else return []
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data] )
 
   const teamList = useMemo<Options<IOptions>>( () => {
@@ -211,8 +212,8 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
       title="Edit game"
       loading={edit.isPending}
     >
-      <pre>{JSON.stringify( initialValues, null, 1 )}</pre>
-      <pre>{JSON.stringify( selectedGameType, null, 1 )}</pre>
+      {/* <pre>{JSON.stringify( initialValues, null, 1 )}</pre> */}
+      {/* <pre>{JSON.stringify( selectedGameType, null, 1 )}</pre> */}
       <FormikProvider value={formik}>
         <Form onSubmit={formik.handleSubmit}
           className="flex flex-col gap-2"
