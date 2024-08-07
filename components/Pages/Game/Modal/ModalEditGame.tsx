@@ -75,8 +75,8 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
       date     : detail?.data?.date ? new Date( detail?.data?.date ) : undefined,
       nextGame : detail?.data?.nextGame
         ? {
-          label : detail?.data?.nextGame.name,
-          value : detail?.data?.nextGame._id,
+          label : ( detail?.data?.nextGame as { _id: string; name: string; } ).name,
+          value : ( detail?.data?.nextGame as { _id: string; name: string; } )._id,
         }
         : undefined,
       gameCode     : selectedGameCode,
