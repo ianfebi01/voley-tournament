@@ -34,16 +34,14 @@ const DarkTheme = createTheme( {
 const BracketSection: FunctionComponent<{ matches: IMatches[] }> = ( props ) => {
   const hasMounted = useHasMounted()
 
-  const { width, height } = useWindowSize()
+  const { width } = useWindowSize()
   // const finalWidth = Math.max( ( width || 0 ) - 50, 500 )
   // const finalHeight = Math.max( ( height || 0 ) - 100, 500 )
-  const finalWidth = ( width || 0 ) - 16
-  const finalHeight = ( height || 0 ) - 80
 
   const ref = useRef<HTMLDivElement>( null )
   const parentRef = useRef<HTMLDivElement>( null )
 
-  const [scaleValue, setScaleValue] = useState<number>( 1 )
+  const [, setScaleValue] = useState<number>( 1 )
 
   const zoomIn = () => {
     const steps = 0.25
@@ -84,34 +82,6 @@ const BracketSection: FunctionComponent<{ matches: IMatches[] }> = ( props ) => 
     }
   }
 
-  // const [previousTouch, setPreviousTouch] = useState<any>( null )
-  // const touchDown = () => {
-  //   const element = ref.current
-  //   if ( !element ) return
-  //   element.style.cursor = 'grabbing'
-
-  //   element.ontouchmove = ( mouseMoveEvent ) => {
-  //     const touch = mouseMoveEvent.touches[0]
-  //     if ( previousTouch ) {
-  //       const movementX =
-  //         Number( touch.pageX.toFixed() ) - Number( previousTouch.pageX.toFixed() )
-  //       const movementY =
-  //         Number( touch.pageY.toFixed() ) - Number( previousTouch.pageY.toFixed() )
-
-  //       element.style.left = `${element.offsetLeft + movementX}px`
-  //       element.style.top = `${element.offsetTop + movementY}px`
-  //       console.log(
-  //         Number( touch.pageX.toFixed() ) - Number( previousTouch.pageX.toFixed() )
-  //       )
-  //     }
-
-  //     setPreviousTouch( mouseMoveEvent.touches[0] )
-  //     // console.log( element.offsetLeft + Number( touch.pageX.toFixed() ) )
-  //     // element.style.left = `${element.offsetLeft + Number( touch.pageX.toFixed() )}px`
-  //     // element.style.top = `${element.offsetTop + Number( touch.pageY.toFixed() )}px`
-  //   }
-  // }
-
   const mouseUp = () => {
     const parentElement = parentRef.current
     if ( !parentElement ) return
@@ -119,28 +89,17 @@ const BracketSection: FunctionComponent<{ matches: IMatches[] }> = ( props ) => 
     parentElement.onmousemove = null
   }
 
-  // useEffect( ()=>{
-
-  //   const pointerDown=( e )=>{
-  //     console.log( e )
-
-  //   }
-  //   ref.current?.addEventListener( 'pointerdown', ( e )=>pointerDown( e ) )
-
-  //   return ()=> ref.current?.removeEventListener( 'pointerdown', ( e )=> pointerDown( e ) )
-  // }, [] )
-
   return (
     <section
       id="home"
       className="main__section !px-0 sm:px-0 md:px-0 bg-dark relativ overflow-hidden"
     >
       <Shape />
-      <div className='w-screen overflow-hidden px-4'>
+      <div className='w-full overflow-hidden'>
    
         <div
           ref={parentRef}
-          className="relative md:w-full mt-20 overflow-hidden border border-white-overlay cursor-grab h-[80vh]"
+          className="relative md:w-full overflow-hidden border border-white-overlay cursor-grab h-[80vh]"
           onMouseDown={mouseDown}
           onMouseUp={mouseUp}
         >

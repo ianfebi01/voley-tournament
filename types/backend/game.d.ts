@@ -18,6 +18,7 @@ export interface IMatches {
   name: string
   startTime: string
   state: string
+  type: 'man' | 'women'
   participants: {
     id: string
     resultText: string | null

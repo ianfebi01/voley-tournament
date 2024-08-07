@@ -6,11 +6,11 @@ export interface IData {
   _id: string
   name: string
   date?: string | undefined
-  type?: string | undefined
+  type?: 'man' | 'women'
   nextGame: {
     _id: string
     name: string
-  }
+  } | string
   gameCode: string
   participants: {
     team: {
