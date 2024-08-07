@@ -2,6 +2,7 @@ import BracketSection from '@/components/Pages/Home/Bracket'
 import { IApi } from '@/types/api'
 import { IMatches } from '@/types/backend/game'
 import axios from 'axios'
+import { unstable_noStore } from 'next/cache'
 import { Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -11,6 +12,7 @@ interface IDataMatches {
   women: IMatches[]
 }
 export default async function Home() {
+  unstable_noStore();
   let data: IApi<IDataMatches> | null = null
 
   try {
