@@ -3,7 +3,7 @@ import { FunctionComponent, useEffect, useMemo, useRef } from 'react'
 import Modal from '@/components/Modal/Modal'
 import { generateValidationSchema } from '@/lib/generateValidationSchema'
 import { IDynamicForm, IOptions } from '@/types/form'
-import { Form, FormikProvider, useFormik } from 'formik'
+import { Form, FormikProvider, getIn, useFormik } from 'formik'
 import FormikField from '@/components/Inputs/FormikField'
 import { useCreate, useGetDatas } from '@/lib/hooks/api/game'
 import { useGetDatas as useGetDatasTeam } from '@/lib/hooks/api/team'
@@ -91,15 +91,15 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
   /**
    *  Option
    */
-
+  const typeFieldValue: IOptions = getIn( formik.values, 'type' )
   const nextGameList = useMemo<Options<IOptions>>( () => {
     if ( data?.data ) {
-      return data.data.map( ( item ) => ( {
+      return data.data.filter( ( item )=> item.type === typeFieldValue?.value  ).map( ( item ) => ( {
         label : item.name,
         value : item._id,
       } ) )
     } else return []
-  }, [data?.data] )
+  }, [data?.data, typeFieldValue] )
 
   const teamList = useMemo<Options<IOptions>>( () => {
     if ( teamData?.data ) {

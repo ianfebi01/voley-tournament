@@ -70,7 +70,7 @@ export const createField: IDynamicForm[] = [
     fieldType   : 'select',
     label       : 'Next Game',
     validation  : {
-      required : true,
+      required : false,
     },
   },
   {
