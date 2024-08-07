@@ -26,7 +26,7 @@ export default function MenuItem() {
                 show ? 'text-white border-white/25' : 'text-white/50'
               )}
             >
-              <span className="text-lg-medium">About Me</span>
+              <span className="text-lg-medium">Follow Sosial Media Kami</span>
               <div
                 className={cn(
                   'transition-default group-hover:text-orange-300/80',
@@ -73,7 +73,7 @@ export default function MenuItem() {
                       </button>
                     ) )}
                   </div>
-                  <div className="bg-dark p-4">
+                  {/* <div className="bg-dark p-4">
                     <button className="flow-root w-full rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-dark-secondary focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50">
                       <span className="flex items-center">
                         <span className="text-sm font-medium text-white">
@@ -87,7 +87,7 @@ export default function MenuItem() {
                         />
                       </span>
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </Popover.Panel>
             </Transition>
