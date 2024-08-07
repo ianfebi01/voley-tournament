@@ -215,6 +215,7 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
       {/* <pre>{JSON.stringify( initialValues, null, 1 )}</pre> */}
       <FormikProvider value={formik}>
         <Form onSubmit={formik.handleSubmit}
+          tabIndex={0}
           className="flex flex-col gap-2"
         >
           {createField.map( ( item: IDynamicForm ) => (

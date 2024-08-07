@@ -149,6 +149,7 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
     >
       <FormikProvider value={formik}>
         <Form onSubmit={formik.handleSubmit}
+          tabIndex={0}
           className="flex flex-col gap-2"
         >
           {createField.map( ( item: IDynamicForm ) => (
