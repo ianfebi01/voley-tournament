@@ -3,11 +3,15 @@ import { FunctionComponent, useEffect, useMemo, useRef } from 'react'
 import Modal from '@/components/Modal/Modal'
 import { generateValidationSchema } from '@/lib/generateValidationSchema'
 import { IDynamicForm, IOptions } from '@/types/form'
-import { Form, FormikProvider, useFormik } from 'formik'
+import { Form, FormikProvider, getIn, useFormik } from 'formik'
 import FormikField from '@/components/Inputs/FormikField'
 import { useEdit, useGetData, useGetDatas } from '@/lib/hooks/api/game'
 import { useGetDatas as useGetDatasTeam } from '@/lib/hooks/api/team'
-import { createField, gameCodeList } from '@/lib/constan/form/form/game'
+import {
+  createField,
+  gameCodeList,
+  gameTypeList,
+} from '@/lib/constan/form/form/game'
 import { ICreatePayload } from '@/types/api/game'
 import { Options } from 'react-select'
 import { IParticipant } from '@/types/backend/game'
@@ -40,6 +44,7 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
       value : 'quarter-final',
       label : 'Quarter Final',
     },
+    type         : undefined,
     participants : undefined,
     winner       : undefined,
   }
@@ -55,6 +60,15 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
     }
   }, [detail?.data] )
 
+  const selectedGameType = useMemo( () => {
+    if ( detail?.data?.type ) {
+      return gameTypeList.find( ( item ) => item.value === detail?.data?.type )
+    } else {
+      return undefined
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [detail?.data, isOpen] )
+
   const formik = useFormik( {
     initialValues : {
       name     : detail?.data?.name || '',
@@ -66,6 +80,7 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
         }
         : undefined,
       gameCode     : selectedGameCode,
+      type         : selectedGameType,
       participants : detail?.data?.participants
         ? detail?.data?.participants.map( ( item ) => ( {
           label : item.team.name,
@@ -84,9 +99,13 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
     validationSchema   : schema,
     enableReinitialize : true,
     onSubmit           : (
-      values: Omit<ICreatePayload, 'gameCode' | 'nextGame' | 'participants'> & {
+      values: Omit<
+        ICreatePayload,
+        'gameCode' | 'nextGame' | 'participants' | 'type'
+      > & {
         nextGame?: IOptions
         gameCode?: IOptions
+        type?: IOptions
         participants?: IOptions[]
         winner?: IOptions
       }
@@ -99,6 +118,7 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
           | 'quarter-final'
           | 'semi-final'
           | 'final',
+        type         : values.type?.value as 'man' | 'women',
         participants : values.participants?.map( ( item ) => ( {
           team     : item.value,
           isWinner : values.winner?.value === item.value,
@@ -125,12 +145,12 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edit.isSuccess] )
 
+  const participantsFieldValue = getIn( formik.values, 'participants' )
   useEffect( () => {
-    if( !formik.values.participants?.length ){
-      formik.setFieldValue( 'winner', undefined )
-    }
+    formik.setFieldValue( 'winner', undefined )
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values.participants] )
+  }, [participantsFieldValue] )
 
   /**
    *  Option
@@ -191,6 +211,8 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
       title="Edit game"
       loading={edit.isPending}
     >
+      <pre>{JSON.stringify( initialValues, null, 1 )}</pre>
+      <pre>{JSON.stringify( selectedGameType, null, 1 )}</pre>
       <FormikProvider value={formik}>
         <Form onSubmit={formik.handleSubmit}
           className="flex flex-col gap-2"
@@ -214,7 +236,9 @@ const ModalEditGame: FunctionComponent<Props> = ( { isOpen, id, setIsOpen } ) =>
                 isMulti : item.select?.isMulti,
               }}
               options={
-                item.name === 'gameCode' ? item.options : getOptions( item.name )
+                ['gameCode', 'type'].includes( item.name )
+                  ? item.options
+                  : getOptions( item.name )
               }
             />
           ) )}

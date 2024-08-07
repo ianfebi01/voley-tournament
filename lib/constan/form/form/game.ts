@@ -15,6 +15,17 @@ export const gameCodeList = [
   },
 ]
 
+export const gameTypeList = [
+  {
+    label : 'Man',
+    value : 'man',
+  },
+  {
+    label : 'Women',
+    value : 'women',
+  },
+]
+
 // Dynamic fields
 export const createField: IDynamicForm[] = [
   {
@@ -42,13 +53,24 @@ export const createField: IDynamicForm[] = [
     },
   },
   {
+    name        : 'type',
+    type        : 'select',
+    placeholder : 'Select game type',
+    fieldType   : 'select',
+    label       : 'Game Type',
+    validation  : {
+      required : false,
+    },
+    options : gameTypeList,
+  },
+  {
     name        : 'nextGame',
     type        : 'select',
     placeholder : 'Select next game',
     fieldType   : 'select',
     label       : 'Next Game',
     validation  : {
-      required : false,
+      required : true,
     },
   },
   {

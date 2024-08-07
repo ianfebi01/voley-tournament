@@ -36,6 +36,10 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
       value : 'quarter-final',
       label : 'Quarter Final',
     },
+    type : {
+      value : 'man',
+      label : 'Man',
+    },
     participants : undefined,
     winner       : undefined,
   }
@@ -44,9 +48,10 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
     initialValues,
     validationSchema : schema,
     onSubmit         : (
-      values: Omit<ICreatePayload, 'gameCode' | 'nextGame' | 'participants'> & {
+      values: Omit<ICreatePayload, 'gameCode' | 'nextGame' | 'participants' | 'type'> & {
         nextGame?: IOptions
         gameCode?: IOptions
+        type?: IOptions
         participants?: IOptions[]
         winner?: IOptions
       }
@@ -58,6 +63,9 @@ const ModalAddGame: FunctionComponent<Props> = ( { isOpen, setIsOpen } ) => {
           | 'quarter-final'
           | 'semi-final'
           | 'final',
+        type : values.type?.value as
+          | 'man'
+          | 'women',
         participants : values.participants?.map( ( item ) => ( {
           team     : item.value,
           isWinner : values.winner?.value === item.value,

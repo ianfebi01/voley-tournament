@@ -20,6 +20,11 @@ const gameSchema = new mongoose.Schema( {
     required : true,
     enum     : ["quarter-final", 'semi-final', "final"],
   },
+  type : {
+    type     : String,
+    required : true,
+    enum     : ["women", 'man'],
+  },
   participants : [
     {
       team : {

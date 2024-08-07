@@ -6,6 +6,7 @@ export interface IData {
   _id: string
   name: string
   date?: string | undefined
+  type?: string | undefined
   nextGame: {
     _id: string
     name: string

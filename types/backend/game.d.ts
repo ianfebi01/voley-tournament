@@ -2,6 +2,7 @@ export interface ICreate {
   name: string
   date?: Date | undefined
   nextGame?: string | null
+  type: 'man' | 'women'
   gameCode: 'quarter-final' | 'semi-final' | 'final'
   participants?: IParticipant[]
 }
