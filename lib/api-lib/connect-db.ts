@@ -25,7 +25,7 @@ if ( !MONGODB_URI || MONGODB_URI.length === 0 ) {
 const cached: IMongoose = mongoose
 
 async function connectDB() {
-  console.log( 'connect' )
+  console.log( '🚀 connected' )
   if ( cached?.conn ) {
     console.log( "🚀 Using cached connection" );
 		

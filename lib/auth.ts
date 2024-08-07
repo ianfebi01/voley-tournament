@@ -1,9 +1,7 @@
-import { IApi } from '@/types/api';
-import { IApiProfile } from '@/types/api/profile';
-import axios, { AxiosResponse } from 'axios';
 import { NextAuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-import getConfig from 'next/config';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { signIn } from './api-lib/controllers/user';
 
 export const authOptions: NextAuthOptions = {
   // Secret for Next-auth, without this JWT encryption/decryption won't work
@@ -20,6 +18,42 @@ export const authOptions: NextAuthOptions = {
         }
       }
     } ),
+    CredentialsProvider( {
+      // The name to display on the sign in form (e.g. "Sign in with...")
+      name        : "Credentials",
+      // `credentials` is used to generate a form on the sign in page.
+      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+      // e.g. domain, username, password, 2FA token, etc.
+      // You can pass any HTML attribute to the <input> tag through the object.
+      credentials : {
+        username : {},
+        password : {},
+      },
+      async authorize( credentials ) {
+        // Add logic here to look up the user from the credentials supplied
+
+        try {
+          
+        } catch ( error ) {
+          
+        }
+        const user = await signIn( String( credentials?.username ), String( credentials?.password ) )
+
+        if ( user ) {
+          // Any object returned will be saved in `user` property of the JWT
+          if ( !user.data ) return null
+          else
+          
+            return user.data
+        } else {
+          // If you return null then an error will be displayed advising the user to check their details.
+          return null
+          // throw new Error( "Login Failed" )
+  
+          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+        }
+      }
+    } )
   ],
   callbacks : {
     async redirect( { url, baseUrl } ) {
@@ -30,31 +64,13 @@ export const authOptions: NextAuthOptions = {
 			
       return baseUrl
     },
-    async signIn( { account } ) {
-      const { publicRuntimeConfig } = getConfig()
-      const userProfile: AxiosResponse<IApi<IApiProfile>> = await axios.get( `${publicRuntimeConfig.baseUrl}/v1/github-auth`, {
-        headers : {
-          Authorization : 'Bearer ' + account?.access_token
-        }
-      } )
-      const data = userProfile.data.data
-
-      if( account ){
-        account.apiData ={
-          ...data,
-          oauthAccessToken : account.access_token
-        }
-      }
-			
-      return true;
-    },
-    async jwt( { token, account, trigger, session } ) {
+    async jwt( { token, account, trigger, session, user } ) {
       // Persist the OAuth access_token and or the user id to the token right after signin
 
       if ( account && trigger === 'signIn' ) {
 
         token = {
-          ...account.apiData
+          ...user
         }
         // token.oauthAccessToken = account.access_token
         // token.accessToken = account.api_token.access_token
