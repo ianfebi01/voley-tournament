@@ -1,7 +1,6 @@
 import '@/assets/scss/main.scss'
 import '@/assets/css/main.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import NextAuthProvider from '@/components/Context/NextAuthProvider'
@@ -10,7 +9,6 @@ import ReactQueryProvider from '@/components/Context/ReactQueryProvider'
 import { Session, getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import ProfileProvider from '@/components/Context/ProfileProvider'
-const inter = Inter( { subsets : ['latin'] } )
 
 config.autoAddCss = false
 
@@ -27,7 +25,7 @@ export default async function AdminLayout( {
   const session = await getServerSession( authOptions )
 
   return (
-    <main className={`h-screen overflow-scroll ${inter.className}`}>
+    <main className={`h-screen overflow-scroll`}>
       <NextAuthProvider session={session as Session}>
         <ReactQueryProvider>
           <ProfileProvider>

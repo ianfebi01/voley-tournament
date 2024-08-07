@@ -3,7 +3,6 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Popover, Transition } from '@headlessui/react'
 import { useState } from 'react'
-import CopyToClipboard from '../Inputs/CopyToClipboard'
 import { socials } from '@/lib/constans/socials-media'
 export default function MenuItem() {
   const [show, setShow] = useState<boolean>( false )
