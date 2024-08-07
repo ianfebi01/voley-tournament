@@ -47,15 +47,15 @@ const Sidebar = () => {
       <div className="px-3">
         <div>
           <div className='flex items-center w-full gap-2 p-2 text-base text-white transition-all duration-500 ease-in-out bg-transparent border rounded-lg hover:bg-dark border-white/25 hover:border-transparent'>
-            <Image src={session?.user?.avatar as string}
+            {/* <Image src={session?.user?.avatar as string}
               alt='Avatar'
               width={40}
               height={40}
               className='overflow-hidden border border-none rounded-full'
-            />
-            <div className='flex flex-col gap-2'>
-              <h2 className='text-xs line-clamp-1'>{session?.user?.name}</h2>
-              <p className='line-clamp-1 text-[0.5rem] leading-none'>{session?.user?.email}</p>
+            /> */}
+            <div className='flex flex-col gap-2 grow'>
+              <h2 className='text-xs line-clamp-1'>{session?.user.username}</h2>
+              {/* <p className='line-clamp-1 text-[0.5rem] leading-none'>{session?.user?.email}</p> */}
             </div>
             <ButtonSignOut iconOnly/>
           </div>

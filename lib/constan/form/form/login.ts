@@ -19,7 +19,7 @@ export const loginField: IDynamicForm[] = [
     name        : 'password',
     type        : 'password',
     placeholder : 'Insert your password',
-    fieldType   : 'text',
+    fieldType   : 'password',
     label       : 'Password',
     validation  : {
       required : true,

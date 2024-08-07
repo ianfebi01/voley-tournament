@@ -1,13 +1,6 @@
 export interface IApiProfile{
-        id?: number
-        email?: string
-        name?: string
-        avatar?: string
-        quote?: string | null
-        positionId?: string | null
-        personImage?: string
-        openToWork?: boolean
-        textBg?: string
+        id: string
+        username?: string
         accessToken?: string
         refreshToken?: string
 }

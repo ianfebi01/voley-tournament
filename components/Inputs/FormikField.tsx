@@ -31,6 +31,7 @@ interface Props {
     | 'select'
     | 'month-year'
     | 'text-editor'
+    | 'password'
   defaultImageUrl?: string
   setImageBase64?: ( base64: string ) => void
   required?: boolean
@@ -233,6 +234,32 @@ const FormikField = forwardRef<FormikFieldHandler, Props>( function FormikField(
             <input
               id={name}
               type="text"
+              placeholder={placeholder}
+              {...field}
+              className={cn(
+                'text-white p-2 border rounded-lg bg-transparent ring-0 focus:ring-0 shadow-none focus:outline-none  transition-default',
+                // field validation
+                [
+                  'focus:border-white/50 border-white/25',
+                  meta.touched &&
+                    meta.error &&
+                    'focus:border-red-500 border-red-500',
+                ]
+              )}
+              disabled={disabled}
+            />
+          )}
+        </>
+      ): fieldType === 'password' ? (
+        <>
+          {loading ? (
+            <div className="w-full h-8 p-2 border rounded-lg border-white/25">
+              <div className="h-full max-w-sm bg-dark-secondary animate-pulse"></div>
+            </div>
+          ) : (
+            <input
+              id={name}
+              type="password"
               placeholder={placeholder}
               {...field}
               className={cn(
