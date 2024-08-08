@@ -4,6 +4,8 @@ import { IMatches } from '@/types/backend/game'
 import { format } from 'date-fns'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const { data, error, itemCount } = await getDatas()
