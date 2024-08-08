@@ -1,5 +1,4 @@
 import { NextAuthOptions } from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { signIn } from './api-lib/controllers/user';
 
@@ -9,15 +8,6 @@ export const authOptions: NextAuthOptions = {
 
   // Configure one or more authentication providers
   providers : [
-    GithubProvider( {
-      clientId      : process.env.GITHUB_APP_CLIENT_ID as string,
-      clientSecret  : process.env.GITHUB_APP_CLIENT_SECRET as string,
-      authorization : {
-        params : {
-          scope : 'repo read:user user:email'
-        }
-      }
-    } ),
     CredentialsProvider( {
       // The name to display on the sign in form (e.g. "Sign in with...")
       name        : "Credentials",
