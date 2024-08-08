@@ -3,12 +3,14 @@ import connectDB from "../connect-db";
 import Game from "../models/Game";
 import Team from "../models/Team";
 import { IData } from "@/types/api/game";
+import { revalidatePath } from "next/cache";
 
 export async function create( params: ICreate ) {
   try {
     await connectDB();
 
     const results = await Game.create( { ...params } );
+    revalidatePath( '/' )
 
     return {
       data : results,
@@ -42,7 +44,8 @@ export async function getData( id: string ) {
       select : 'name',
       model  : Game
     } )
-
+    revalidatePath( '/' )
+    
     return {
       data : results,
     }
@@ -62,6 +65,8 @@ export async function edit( id: string, body: ICreate ) {
       },
       { new : true }
     ).populate( { path : 'participants.team', select : 'name', model : Team } )
+
+    revalidatePath( '/' )
 
     return {
       data : results,
