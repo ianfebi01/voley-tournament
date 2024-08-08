@@ -67,8 +67,11 @@ export async function GET() {
       } )
 
     const json_response = {
-      status : 'success',
-      data   : {
+      status  : 'success',
+      headers : {
+        'Cache-Control' : 'no-store'
+      },
+      data : {
         man,
         women,
       },
